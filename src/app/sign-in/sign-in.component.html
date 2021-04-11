@@ -1,0 +1,99 @@
+<div class="row text-center">
+  <div class="page-title">
+    Already have an account ? Sign in right here !
+  </div>
+</div>
+
+<div class="row" style="width:50%;margin: auto">
+  <div class="col-sm-12">
+    <form [formGroup]="mSignInForm"
+          (ngSubmit)="onSubmitSignInForm()"
+          class="bordered-nice">
+      <div class="form-group">
+        <label for="email">
+          Enter your email address
+        </label>
+        <div id="if-else-email">
+          <div *ngIf="fEmail.invalid;
+                  then ko_fEmail
+                  else ok_fEmail"></div>
+          <ng-template #ok_fEmail>
+            <div class="alert-success">
+              This email address is valid.
+            </div>
+          </ng-template>
+          <ng-template #ko_fEmail>
+            <div class="alert-danger">
+              <div *ngIf="fEmail.hasError('required')">
+                Email address is required.
+              </div>
+              <div *ngIf="fEmail.hasError('email')">
+                Email address incorrectly formatted.
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <input type="text"
+               class="form-control"
+               id="email"
+               formControlName="fEmail"
+               placeholder="Ex. john.doe@gmail.com">
+      </div>
+
+      <div class="form-group">
+        <label for="password">
+          Enter your password
+        </label>
+        <div id="if-else-password">
+          <div *ngIf="fPassword.invalid;
+                  then ko_fPassword
+                  else ok_fPassword"></div>
+          <ng-template #ok_fPassword>
+            <div class="alert-success">
+              This password is valid.
+            </div>
+          </ng-template>
+          <ng-template #ko_fPassword>
+            <div class="alert-danger">
+              <div *ngIf="fPassword.hasError('required')">
+                Password is required.
+              </div>
+              <div *ngIf="fPassword.hasError('minlength')">
+                Password must be at least 6 characters long.
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <input type="password"
+               class="form-control"
+               id="password"
+               formControlName="fPassword"
+               placeholder='Ex. azerty123'
+        >
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-lg btn-success"
+                type="submit"
+                [disabled]="mSignInForm.invalid"
+        >
+          Sign in !
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<br><br>
+
+<div class="row text-center">
+  <div class="page-title">
+    No account yet ? Click here to create one !
+  </div>
+  <br>
+  <button class="btn btn-lg btn-primary"
+          routerLink="/sign-up">
+    Sign me up !
+  </button>
+</div>
+

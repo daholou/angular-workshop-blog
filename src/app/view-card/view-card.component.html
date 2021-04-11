@@ -1,0 +1,110 @@
+<div *ngIf="isSomethingSelected"
+     class="col-md-6">
+
+  <!--    Title for the post-->
+  <div class="bordered-simple text-center">
+    <h2>{{mCard.mTitle}} </h2>
+    <h4>
+      by <span class="ita">{{mCard.mAuthorName}}</span>,
+      on {{mCardPublishDate | date: 'MMM d, y, hh:mm a' }}
+    </h4>
+  </div>
+
+  <!--  like, dislike-->
+  <!--  note: delete shouldn't be here, it's inconvenient for the user. Maybe
+   add a special page to check all created posts or something?-->
+  <!--  <div class="row" *ngIf="isAuth && isAuthor">-->
+  <!--    <button class="btn btn-warning"-->
+  <!--            (click)="onDeletePost()">-->
+  <!--      Delete your post-->
+  <!--    </button>-->
+  <!--  </div>-->
+  <div [ngClass]="{'bordered-simple': true,
+                   'alert-success': mDoesUserLikePost,
+                   'alert-danger': mDoesUserDislikePost,
+                   'alert-info': !mDoesUserLikePost && !mDoesUserDislikePost}">
+    <div *ngIf="isAuth then ok_auth; else ko_auth"></div>
+    <ng-template #ok_auth>
+      <div *ngIf="isAuthor then ok_author; else ko_author"></div>
+      <ng-template #ok_author>
+        <h4>You wrote this post.</h4>
+      </ng-template>
+      <ng-template #ko_author>
+        <table style="width: 100%">
+          <tr>
+            <td class="text-left">
+              <h4>
+                {{mDoesUserLikePost ? 'You like this post.' :
+                mDoesUserDislikePost ? 'You dislike this post.' :
+                  'You are neutral.'}}
+              </h4>
+            </td>
+            <td class="text-right">
+              <div class="btn-group-lg">
+                <button [ngClass]="{'btn btn-success':true,
+                          'active': mDoesUserLikePost}"
+                        (click)="onLike()">
+                  Like
+                  <img src="assets/img/thumbsup.png"
+                       alt="Like thumb"
+                       class="text-right small-icon">
+
+                </button>
+                <button [ngClass]="{'btn btn-danger':true,
+                          'active': mDoesUserDislikePost}"
+                        (click)="onDislike()">
+                  Dislike
+                  <img src="assets/img/thumbsdown.png"
+                       alt="Dislike thumb"
+                       class="text-right small-icon">
+                </button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </ng-template>
+    </ng-template>
+    <ng-template #ko_auth>
+      <h4>Screw you, anon.</h4>
+    </ng-template>
+  </div>
+
+  <div class="bordered-simple scrollable-panel-lg">
+
+    <!--    Image for the post-->
+    <h3>Contents</h3>
+    <div>
+      <img style="max-width:400px;"
+           alt="post-image"
+           *ngIf="mCard.mImgURL"
+           [src]="mCard.mImgURL">
+      <br>
+      <p>{{mCard.mTextContent}}</p>
+    </div>
+
+
+<!--    &lt;!&ndash;  comment section&ndash;&gt;-->
+<!--    <h3>Comments</h3>-->
+<!--    <div class="scrollable-panel">-->
+<!--      <app-comment-list></app-comment-list>-->
+<!--    </div>-->
+<!--    <div *ngIf="isAuth">-->
+<!--      <form (ngSubmit)="onNewComment(f)" #f="ngForm">-->
+<!--        <div class="form-group">-->
+<!--          <label for="content">Your comment</label>-->
+<!--          <textarea class="form-control"-->
+<!--                    id="content"-->
+<!--                    name="fText"-->
+<!--                    maxlength="10"-->
+<!--                    ngModel></textarea>-->
+<!--        </div>-->
+<!--        <button class="btn btn-warning"-->
+<!--                type="submit">-->
+<!--          Add a comment-->
+<!--        </button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>
+

@@ -1,0 +1,105 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #f9f98b;
+}
+
+.alignLeft {
+  float: left;
+}
+
+.alignRight {
+  float: right;
+}
+
+.alignMiddle {
+  text-align: center;
+}
+
+img.small-icon {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 40px;
+}
+
+.scrollable-panel-lg {
+  overflow-y: auto;
+  height: 75vh;
+}
+
+.scrollable-panel-mx {
+  overflow-y: auto;
+  height: 90vh;
+}
+
+.page-title {
+  color: #5b2b01;
+  //font-size: xxx-large;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 48px;
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+.intro {
+  width: 80%;
+  margin: auto;
+  border: 2px outset black;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.bordered-simple {
+  border: 2px outset black;
+  padding: 3px;
+  //border-bottom: dotted;
+  border-radius: 10px;
+  //border-top-right-radius: 10px;
+}
+
+.bordered-nice {
+  border: 2px outset black;
+  padding: 3px;
+  //border-bottom: dotted;
+  border-radius: 10px;
+  //border-top-right-radius: 10px;
+}
+
+.bordered-nice:focus-within {
+  border: 2px inset #000000;
+  background-color: #ebc9ef;
+}
+
+ul.no-bullets {
+  list-style-type: none;
+  margin: 0;
+  padding: 5px;
+}
+
+//.bordered-success:focus-within {
+//  border: 2px inset #000000;
+//  background-color: #d0eec7;
+//}
+
+.table-of-likes {
+  width: 90%;
+  margin: auto;
+  padding: 5px;
+}
+
+.ita {
+  font-style: italic;
+}
+
+.scrollable-panel {
+  overflow-y: auto;
+  height: 400px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.padded-up {
+  margin: 10px;
+}

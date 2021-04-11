@@ -1,0 +1,66 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">Angular Blog App</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active">
+        <a routerLink="posts">All Posts</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="sign-in">Sign In</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="sign-up">Register</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="user-profile">My Profile</a>
+      </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+      <div *ngIf="isAuth; then ok_auth else ko_auth"></div>
+      <ng-template #ok_auth>
+        <li class="navbar-text">
+          <p>
+            Signed in as: <span class="ita">{{displayName}}</span>
+          </p>
+        </li>
+        <li class="navbar-text">
+          <img alt="profile pic"
+               [src]="photoURL ? photoURL : 'assets/img/default-profile-pic.PNG'"
+               style=" width:auto ;max-height:35px; border: solid black 1px">
+        </li>
+        <li>
+          <button class="navbar-btn btn btn-danger"
+                  (click)="onLogout()">
+            Logout
+          </button>
+        </li>
+      </ng-template>
+      <ng-template #ko_auth>
+        <li class="navbar-text">
+          <p>
+            You are not signed in.
+          </p>
+        </li>
+        <li>
+          <button class="navbar-btn btn btn-success"
+                  routerLink="/sign-in">
+            Login
+          </button>
+        </li>
+      </ng-template>
+    </ul>
+
+
+<!--    <div class="navbar-text">-->
+<!--      <p>{{mConsoleMsg}}</p>-->
+<!--    </div>-->
+
+    <div>
+
+    </div>
+
+  </div>
+</nav>

@@ -1,0 +1,118 @@
+<div class="row text-center">
+  <div class="page-title">
+    Create your account here !
+  </div>
+</div>
+
+<div class="intro text-center">
+  <h3>We just need an email address and a password to start.</h3>
+  <h4>
+    Once your account is created, you can add a sweet username, a
+    cool profile picture, and change your email address and password.
+  </h4>
+</div>
+<br>
+
+<div class="row" style="width:50%;margin: auto">
+  <form [formGroup]="mSignUpForm"
+        (ngSubmit)="onSubmitSignUpForm()"
+        class="bordered-nice">
+
+    <div class="form-group">
+      <label for="email">Enter a valid email address</label>
+      <div id="if-else-email">
+        <div *ngIf="fEmail.invalid;
+                  then ko_fEmail
+                  else ok_fEmail"></div>
+        <ng-template #ok_fEmail>
+          <div class="alert-success">
+            This email address is valid.
+          </div>
+        </ng-template>
+        <ng-template #ko_fEmail>
+          <div class="alert-danger">
+            <div *ngIf="fEmail.hasError('required')">
+              Email address is required.
+            </div>
+            <div *ngIf="fEmail.hasError('email')">
+              Email address incorrectly formatted.
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <input type="text"
+             class="form-control"
+             id="email"
+             formControlName="fEmail"
+             placeholder="Ex. john.doe@gmail.com"
+      >
+    </div>
+
+    <br>
+
+    <div class="form-group">
+      <label for="password">Enter a secure password</label>
+      <div id="if-else-password">
+        <div *ngIf="fPassword.invalid;
+                  then ko_fPassword
+                  else ok_fPassword"></div>
+        <ng-template #ok_fPassword>
+          <div class="alert-success">
+            This password is valid.
+          </div>
+        </ng-template>
+        <ng-template #ko_fPassword>
+          <div class="alert-danger">
+            <div *ngIf="fPassword.hasError('required')">
+              Password is required.
+            </div>
+            <div *ngIf="fPassword.hasError('minlength')">
+              Password must be at least 6 characters long.
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <input type="password"
+             class="form-control"
+             id="password"
+             formControlName="fPassword"
+             placeholder="Ex. azerty1234"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="password2">
+        Confirm your password, just to be safe
+      </label>
+      <div>
+        <div *ngIf="mSignUpForm.hasError('notSame');
+                  then ko_fPassword2
+                  else ok_fPassword2"></div>
+        <ng-template #ok_fPassword2>
+          <div class="alert-success">
+            Perfect! Those passwords match.
+          </div>
+        </ng-template>
+        <ng-template #ko_fPassword2>
+          <div class="alert-danger">
+            Passwords do not match
+          </div>
+        </ng-template>
+      </div>
+      <input type="password"
+             class="form-control"
+             id="password2"
+             formControlName="fPassword2"
+             placeholder="Ex. azerty1234">
+    </div>
+
+    <div class="text-center">
+      <button class=" btn btn-lg btn-success"
+              type="submit"
+              [disabled]="mSignUpForm.invalid">
+        Create my account
+      </button>
+    </div>
+
+  </form>
+</div>

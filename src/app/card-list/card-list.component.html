@@ -1,0 +1,31 @@
+<div class="col-md-6 ">
+
+  <div class="bordered-simple text-center">
+    <h3>Welcome, {{userDisplayName}} !</h3>
+    <p *ngIf="!isAuth">
+      You need to
+      <span><a routerLink="/sign-in">sign in to your account</a></span>
+      to be able to publish a post.
+    </p>
+    <button class="btn btn-success btn-lg"
+            routerLink="/new-post"
+            [disabled]="!isAuth"
+    >
+      Click here to write a new post
+    </button>
+  </div>
+
+  <div class="bordered-simple scrollable-panel-lg">
+    <ul class="list-group">
+      <app-card-list-item *ngFor="let card of mCards; let i=index"
+                          [mCard]="card"
+                          [mIndex]="i">
+      </app-card-list-item>
+    </ul>
+  </div>
+
+</div>
+
+<app-view-card></app-view-card>
+
+

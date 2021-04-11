@@ -1,0 +1,292 @@
+<div class="row text-center">
+  <div class="page-title">
+    <div *ngIf="isAuth; then ok_auth else ko_auth"></div>
+    <ng-template #ok_auth>
+      Welcome to your profile page, {{displayName}} !
+    </ng-template>
+    <ng-template #ko_auth>
+      You shouldn't be here... what did you do?
+    </ng-template>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-8">
+
+    <form [formGroup]="mNameForm"
+          (ngSubmit)="onSubmitNameForm()"
+          class="bordered-nice">
+      <div class="form-group">
+        <label for="displayName">Change my username</label>
+        <div class="row">
+          <div class="col-sm-8">
+            <div id="if-else-displayName">
+              <div *ngIf="fDisplayName.invalid;
+                  then ko_fDisplayName
+                  else ok_fDisplayName"></div>
+              <ng-template #ok_fDisplayName>
+                <div class="alert-success">
+                  This username is valid.
+                </div>
+              </ng-template>
+              <ng-template #ko_fDisplayName>
+                <div *ngIf="fDisplayName.errors.required" class="alert-danger">
+                  Username is required.
+                </div>
+                <div *ngIf="fDisplayName.errors.sameName" class="alert-warning">
+                  This is your current username.
+                </div>
+              </ng-template>
+            </div>
+            <input type="text"
+                   class="form-control"
+                   id="displayName"
+                   formControlName="fDisplayName"
+                   placeholder='Ex: "John Doe"'>
+          </div>
+          <div class="col-sm-4 btn-group-lg">
+            <button class="btn btn-primary"
+                    type="button"
+                    (click)="onResetName()"
+                    [disabled]="fDisplayName.hasError('sameName')">Reset
+            </button>
+            <button class="btn btn-success"
+                    type="submit"
+                    [disabled]="mNameForm.invalid">Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form [formGroup]="mEmailForm"
+          (ngSubmit)="onSubmitEmailForm()"
+          class="bordered-nice">
+      <!-- Warning! putting a function call on the template will apparently cause
+       it to be called quite often, each time the component re-renders. This is
+        not great in terms of performance... -->
+      <div class="form-group">
+        <label for="email">Change my email address</label>
+        <div class="row">
+          <div class="col-sm-8">
+            <div id="if-else-email">
+              <div *ngIf="fEmail.invalid;
+                  then ko_fEmail
+                  else ok_fEmail"></div>
+              <ng-template #ok_fEmail>
+                <div class="alert-success">
+                  This email address is valid.
+                </div>
+              </ng-template>
+              <ng-template #ko_fEmail>
+                <div *ngIf="fEmail.errors.required" class="alert-danger">
+                  Email address is required.
+                </div>
+                <div *ngIf="fEmail.errors.email" class="alert-danger">
+                  Email address incorrectly formatted.
+                </div>
+                <div *ngIf="fEmail.errors.sameEmail" class="alert-warning">
+                  This is your current email address.
+                </div>
+              </ng-template>
+            </div>
+            <input type="text"
+                   class="form-control"
+                   id="email"
+                   formControlName="fEmail"
+                   placeholder="Ex. john.doe@gmail.com"
+            >
+          </div>
+          <div class="col-sm-4 btn-group-lg">
+            <button class="btn btn-primary"
+                    type="button"
+                    (click)="onResetEmail()"
+                    [disabled]="fEmail.hasError('sameEmail')">Reset
+            </button>
+            <button class="btn btn-success"
+                    type="submit"
+                    [disabled]="mEmailForm.invalid">Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form [formGroup]="mPasswordForm"
+          (ngSubmit)="onSubmitPasswordForm()"
+          class="bordered-nice">
+      <div class="form-group">
+        <label for="password">Change my password</label>
+        <div class="row">
+          <div class="col-sm-8">
+            <div id="if-else-password">
+              <div *ngIf="fPassword.invalid;
+                  then ko_fPassword
+                  else ok_fPassword"></div>
+              <ng-template #ok_fPassword>
+                <div class="alert-success">
+                  This password is valid.
+                </div>
+              </ng-template>
+              <ng-template #ko_fPassword>
+                <div class="alert-danger">
+                  <div *ngIf="fPassword.hasError('required')">
+                    Password is required.
+                  </div>
+                  <div *ngIf="fPassword.hasError('minlength')">
+                    Password must be at least 6 characters long.
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   formControlName="fPassword"
+                   placeholder="Enter your new password...">
+          </div>
+          <div class="col-sm-4 btn-group-lg centered-container">
+            <button class="btn btn-primary"
+                    type="button"
+                    (click)="onResetPassword()"
+                    [disabled]="(fPassword.hasError('required') &&
+                    fPassword2.hasError('required')) ">Reset
+            </button>
+            <button class="btn btn-success"
+                    type="submit"
+                    [disabled]="mPasswordForm.invalid">Save
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password2"></label>
+          <div class="row">
+            <div class="col-sm-8">
+              <div id="if-else-password2">
+                <div *ngIf="mPasswordForm.hasError('notSame');
+                  then ko_fPassword2
+                  else ok_fPassword2"></div>
+                <ng-template #ok_fPassword2>
+                  <div class="alert-success">
+                    Perfect! Those passwords match.
+                  </div>
+                </ng-template>
+                <ng-template #ko_fPassword2>
+                  <div class="alert-danger">
+                    Passwords do not match
+                  </div>
+                </ng-template>
+              </div>
+              <input type="password"
+                     class="form-control"
+                     id="password2"
+                     formControlName="fPassword2"
+                     placeholder="Repeat the new password..."
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group bordered-nice">
+      <label for="delete-account">Delete my account</label>
+      <div class="row">
+        <div class="btn-group-lg btn-group-vertical col-sm-8">
+          <button type="button"
+                  id="delete-account"
+                  [ngClass]="{'btn btn-warning':true,
+                  'active': mIsShowingDeleteAccount}"
+                  (click)="onAskDeleteAccount()">
+            {{mIsShowingDeleteAccount ? 'Wait, I changed my mind!'
+            : 'Delete this account ?'}}
+          </button>
+          <button *ngIf="mIsShowingDeleteAccount"
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="onDeleteAccount()">
+            Yes, really delete this account.
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-sm-4 text-center">
+
+    <div class="bordered-nice">
+      <div class="row">
+        <img style="max-width:200px; height:auto;"
+             alt="Your profile picture."
+             [src]="photoURL ? photoURL : 'assets/img/default-profile-pic.PNG'">
+      </div>
+
+      <div class="row">
+        <form (ngSubmit)="onSubmitChangePhoto()">
+          <div class="form-group">
+            <label for="photoURL">Change my profile picture</label>
+            <br>
+            <input type="file"
+                   class="form-control-file"
+                   id="photoURL"
+                   (change)="previewImage($event)"
+                   accept="image/*">
+
+            <div *ngIf="mSafePreviewImageURL"
+                 class="bordered-simple">
+              <img alt="A preview of your new profile picture"
+                   [src]="mSafePreviewImageURL"
+                   (load)="onPreviewImageLoad()"
+                   style="max-width:300px; height:auto;">
+              <p *ngIf="mFile">
+                File: {{mFile.name}} /
+                type: {{mFile.type}} /
+                size: {{mFile.size}} bytes /
+              </p>
+
+              <p *ngIf="isFileTooBig"> File is too big!</p>
+
+              <button class="btn btn-lg btn-danger"
+                      (click)="clearImage()"
+                      type="button">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <button type="submit"
+                  [disabled]="!isAuth || hasUploadTask || !mFile">
+            Do it !
+          </button>
+        </form>
+      </div>
+
+
+
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped"
+             role="progressbar"
+             [style.width.%]="taskProgressPercent"></div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="form-group">
+          <button (click)="onDeletePhotoURL()"
+                  id="deletePhotoURL"
+                  class="btn btn-danger btn-lg"
+                  [disabled]="!photoURL">
+            Delete my profile picture
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

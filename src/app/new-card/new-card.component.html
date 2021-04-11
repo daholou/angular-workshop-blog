@@ -1,0 +1,96 @@
+<div class="row text-center">
+  <div class="page-title">
+    Write a new post
+  </div>
+</div>
+
+
+<div class="row" style="width:75%;margin: auto">
+  <div class="col-sm-12">
+
+
+    <form [formGroup]="mNewCardForm"
+          (ngSubmit)="onSubmitNewCardForm()"
+          class="bordered-nice">
+
+      <!-- Title -->
+      <div class="form-group">
+        <label for="post-title">Choose a title for your post</label>
+        <div *ngIf="fTitle.invalid" class="alert-danger">
+          Post title is required.
+        </div>
+        <input type="text"
+               class="form-control"
+               id="post-title"
+               formControlName="fTitle"
+               placeholder="My awesome post">
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="content">
+          Add a short description ({{curCharCount}} / {{maxCharCount}}
+          characters)
+        </label>
+        <textarea class="form-control"
+                  id="content"
+                  formControlName="fTextContent"
+                  placeholder="Some short description"
+                  [maxLength]="maxCharCount"></textarea>
+      </div>
+
+
+      <!-- Picture-->
+      <div class="form-group">
+        <label for="picture">Add a picture</label>
+        <br>
+        <input type="file"
+               class="form-control-file"
+               id="picture"
+               (change)="previewImage($event)"
+               accept="image/*">
+        <div *ngIf="mSafePreviewImageURL"
+             class="bordered-simple">
+          <img alt="post picture"
+               [src]="mSafePreviewImageURL"
+               (load)="onPreviewImageLoad()"
+               style="max-width:300px; height:auto;">
+          <p *ngIf="mFile">
+            File: {{mFile.name}} /
+            type: {{mFile.type}} /
+            size: {{mFile.size}} bytes /
+
+          </p>
+          <p *ngIf="isFileTooBig"> File is too big!</p>
+          <button class="btn btn-lg btn-danger"
+                  (click)="clearImage()"
+                  type="button">
+            Cancel
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="btn-group-lg">
+          <button class="btn btn-success btn-lg"
+                  type="submit"
+                  [disabled]="!isAuth ||
+                             mNewCardForm.invalid ||
+                             hasUploadTask ||
+                             isFileTooBig">
+            Publish this post!
+          </button>
+        </div>
+
+        <div class="progress" *ngIf="hasUploadTask">
+          <div class="progress-bar progress-bar-striped"
+               role="progressbar"
+               [style.width.%]="taskProgressPercent"></div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+
+</div>

@@ -1,0 +1,65 @@
+<li [ngClass]="{'list-group-item pointer':true,
+                'list-group-item-success':isPopular,
+                'list-group-item-danger': isUnpopular,
+                'active': isSelected}"
+    (click)="onSelectPost()">
+  <div>
+    <h3>
+      {{title}}
+      <span *ngIf="canEdit" class="ita"> (by you)</span>
+    </h3>
+
+    <h4>
+      by <span class="ita"> {{author}}</span>,
+      on {{date | date: 'MMM d, y, hh:mm a' }}
+    </h4>
+
+    <table class="table-of-likes">
+      <!-- Row 1: #likes | #dislikes | #votes -->
+      <tr>
+        <!-- #likes -->
+        <td>
+          <img src="assets/img/thumbsup.png"
+               alt="Like thumb"
+               class="text-right small-icon">
+          <span>{{nbLikes}}</span>
+        </td>
+        <!-- #dislikes -->
+        <td class="text-right">
+          <span>{{nbDislikes}}</span>
+          <img src="assets/img/thumbsdown.png"
+               alt="Dislike thumb"
+               class="text-right small-icon">
+        </td>
+        <!-- #votes -->
+        <td class="text-right">
+          <span>votes</span>
+        </td>
+      </tr>
+      <!-- Row 2: progress bar | #comments -->
+      <tr>
+        <!-- progress bar -->
+        <td colspan="2">
+          <div class="progress">
+            <div class="progress-bar progress-bar-success"
+                 role="progressbar"
+                 [style.width.%]="percentNbLikes">
+            </div>
+            <div class="progress-bar progress-bar-danger"
+                 role="progressbar"
+                 [style.width.%]="percentNbDislikes">
+            </div>
+          </div>
+        </td>
+        <!-- #comments -->
+        <td class="text-right">
+          <span>comments</span>
+        </td>
+      </tr>
+    </table>
+
+
+  </div>
+
+
+</li>

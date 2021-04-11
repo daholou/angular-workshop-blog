@@ -1,0 +1,7 @@
+<p>{{introMsg()}}</p>
+<ul class="list-group">
+  <app-comment-list-item *ngFor="let comment of mComments; let i=index"
+                         [mComment]="comment"
+                         [mIndex]="i">
+  </app-comment-list-item>
+</ul>

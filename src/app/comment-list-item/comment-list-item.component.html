@@ -1,0 +1,17 @@
+<li class="list-group-item">
+  <h6>
+    {{mComment.mAuthorName}}, on {{date() | date:'MMM d, y, hh:mm a'}}
+  </h6>
+  <p>{{mComment.mText}}</p>
+  <p>likes:{{mComment.mNbLikes}} / dislikes:{{mComment.mNbDislikes}}</p>
+
+  <div *ngIf="isAuth()">
+    <button class="btn btn-success"
+            (click)="onLike()">Like
+    </button>
+
+    <button class="btn btn-danger"
+            (click)="onDislike()">Dislike
+    </button>
+  </div>
+</li>
