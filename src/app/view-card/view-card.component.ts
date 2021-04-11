@@ -102,6 +102,7 @@ export class ViewCardComponent implements OnInit, OnDestroy
       // slight optimisation, since {likes} and {dislikes} are disjoint
       this.mDoesUserDislikePost = (!this.mDoesUserLikePost) &&
         this.mUserData.mDislikedPosts.includes(postUID);
+      console.log(this.mDoesUserLikePost, this.mDoesUserDislikePost);
     }
     else
     {
@@ -151,6 +152,7 @@ export class ViewCardComponent implements OnInit, OnDestroy
       this.mCardService.updateVote(this.mCard, 1, 0);
       this.mUserDataService.like(this.mCard.mPostUID, false);
     }
+    console.log(this.mDoesUserLikePost, this.mDoesUserDislikePost);
   }
 
   onDislike(): void

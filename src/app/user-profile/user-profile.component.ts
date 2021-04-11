@@ -426,7 +426,8 @@ export class UserProfileComponent implements OnInit, OnDestroy
 
   onDeleteAccount(): void
   {
-    this.mUserDataService.deleteUser();
+    this.mToast.warning('This feature is not implemented!', 'Sorry!');
+    // this.mUserDataService.deleteUser();
   }
 
   get isAuth(): boolean

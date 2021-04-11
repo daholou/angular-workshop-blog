@@ -216,10 +216,10 @@
 
   </div>
 
-  <div class="col-sm-4 text-center">
 
-    <div class="bordered-nice">
-      <div class="row">
+  <div class="col-sm-4 bordered-nice">
+
+      <div class="text-center">
         <img style="max-width:200px; height:auto;"
              alt="Your profile picture."
              [src]="photoURL ? photoURL : 'assets/img/default-profile-pic.PNG'">
@@ -238,44 +238,54 @@
 
             <div *ngIf="mSafePreviewImageURL"
                  class="bordered-simple">
-              <img alt="A preview of your new profile picture"
+
+              <div class="btn-group-lg">
+                <button class="btn-success btn" type="submit"
+                        [disabled]="!isAuth || hasUploadTask || !mFile">
+                  Upload image
+                </button>
+                <button class="btn btn-lg btn-danger"
+                        (click)="clearImage()"
+                        type="button">
+                  Cancel
+                </button>
+              </div>
+
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped"
+                     role="progressbar"
+                     [style.width.%]="taskProgressPercent"></div>
+              </div>
+
+              <div class="text-center">
+              <img
+                alt="A preview of your new profile picture"
                    [src]="mSafePreviewImageURL"
                    (load)="onPreviewImageLoad()"
-                   style="max-width:300px; height:auto;">
-              <p *ngIf="mFile">
-                File: {{mFile.name}} /
-                type: {{mFile.type}} /
-                size: {{mFile.size}} bytes /
-              </p>
+                   style="max-width:200px; height:auto;">
+
+              <div *ngIf="mFile">
+                <p>File: {{mFile.name}} </p>
+                <p>type: {{mFile.type}} </p>
+                <p>size: {{mFile.size}} bytes</p>
+              </div>
 
               <p *ngIf="isFileTooBig"> File is too big!</p>
+              </div>
 
-              <button class="btn btn-lg btn-danger"
-                      (click)="clearImage()"
-                      type="button">
-                Cancel
-              </button>
             </div>
           </div>
 
-          <button type="submit"
-                  [disabled]="!isAuth || hasUploadTask || !mFile">
-            Do it !
-          </button>
+
         </form>
       </div>
 
 
 
-      <div class="progress">
-        <div class="progress-bar progress-bar-striped"
-             role="progressbar"
-             [style.width.%]="taskProgressPercent"></div>
-      </div>
 
       <br>
 
-      <div class="row">
+      <div class="text-center">
         <div class="form-group">
           <button (click)="onDeletePhotoURL()"
                   id="deletePhotoURL"
@@ -285,7 +295,6 @@
           </button>
         </div>
       </div>
-    </div>
 
   </div>
 

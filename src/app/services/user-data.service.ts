@@ -5,6 +5,8 @@ import 'firebase/database';
 import 'firebase/auth';
 import User = firebase.User;
 import DataSnapshot = firebase.database.DataSnapshot;
+import {Injectable} from '@angular/core';
+import {ToastrService} from 'ngx-toastr';
 
 
 function generateUserName(): string
@@ -16,6 +18,7 @@ function generateUserName(): string
 export const MAX_USR_IMG_SIZE_KB: number = 500;
 export const MAX_POST_IMG_SIZE_KB: number = 800;
 
+@Injectable()
 export class UserDataService
 {
   mUserData: UserData = UserData.makeEmpty();
@@ -34,7 +37,7 @@ export class UserDataService
   }
 
 
-  constructor()
+  constructor(private mToast: ToastrService)
   {
     firebase.auth().onAuthStateChanged(
       // next
@@ -47,6 +50,7 @@ export class UserDataService
         // 2. Notify observers that user data has changed
         if (user)
         {
+          mToast.success('You are signed in.');
           // user is signed in !
           // Give the user a name when he doesn't have one
           if (!this.mUser.displayName)
@@ -61,6 +65,7 @@ export class UserDataService
         }
         else
         {
+          mToast.warning('You are not signed in.');
           // no user is signed in !
           this.resetUserData();
         }

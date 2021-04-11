@@ -57,7 +57,7 @@ export class SignInComponent implements OnInit
     this.mAuthService.signInUser(email, password).then(
       () =>
       {
-        this.mToast.success('Sign-in successful.');
+        // this.mToast.success('Sign-in successful.');
         this.mRouter.navigate(['/user-profile']).then();
       },
       (error) =>

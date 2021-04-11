@@ -6,6 +6,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import User = firebase.User;
 import {UserDataService} from '../services/user-data.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header-bar',
@@ -22,7 +23,8 @@ export class HeaderBarComponent implements OnInit, OnDestroy
 
   constructor(private mAuthService: AuthService,
               private mConsoleService: ConsoleService,
-              private mUserDataService: UserDataService)
+              private mUserDataService: UserDataService,
+              private mRouter: Router)
   {
   }
 
@@ -63,13 +65,8 @@ export class HeaderBarComponent implements OnInit, OnDestroy
     this.mAuthService.signOutUser().then(
       () =>
       {
-        console.log('logout success');
-      },
-      () =>
-      {
-        console.log('logout fail');
-      }
-    );
+        this.mRouter.navigate(['/sign-in']).then();
+      });
   }
 
   get isAuth(): boolean
