@@ -102,7 +102,7 @@ export class ViewCardComponent implements OnInit, OnDestroy
       // slight optimisation, since {likes} and {dislikes} are disjoint
       this.mDoesUserDislikePost = (!this.mDoesUserLikePost) &&
         this.mUserData.mDislikedPosts.includes(postUID);
-      console.log(this.mDoesUserLikePost, this.mDoesUserDislikePost);
+      // console.log(this.mDoesUserLikePost, this.mDoesUserDislikePost);
     }
     else
     {
@@ -128,31 +128,33 @@ export class ViewCardComponent implements OnInit, OnDestroy
 
   onLike(): void
   {
+    const uid: number = this.mCard.mPostUID;
     // opinion === 1 --> 1    ==>  cancel the like
-    // opinion ===-1 --> 1    ==>  -1 dislike AND +1 like
-    // opinion === 0 --> 1    ==>  +1 like
     if (this.mDoesUserLikePost)
     {
       this.mDoesUserLikePost = false;
       this.mDoesUserDislikePost = false;
-      this.mCardService.updateVote(this.mCard, -1, 0);
-      this.mUserDataService.cancel(this.mCard.mPostUID, true);
+      // change card data
+      this.mCardService.updateVote(uid, -1, 0);
+      // change user data
+      this.mUserDataService.cancelPost(uid, true);
     }
+    // opinion ===-1 --> 1    ==>  -1 dislike AND +1 like
     else if (this.mDoesUserDislikePost)
     {
       this.mDoesUserLikePost = true;
       this.mDoesUserDislikePost = false;
-      this.mCardService.updateVote(this.mCard, 1, -1);
-      this.mUserDataService.like(this.mCard.mPostUID, true);
+      this.mCardService.updateVote(uid, 1, -1);
+      this.mUserDataService.likePost(uid, true);
     }
+    // opinion === 0 --> 1    ==>  +1 like
     else
     {
       this.mDoesUserLikePost = true;
       this.mDoesUserDislikePost = false;
-      this.mCardService.updateVote(this.mCard, 1, 0);
-      this.mUserDataService.like(this.mCard.mPostUID, false);
+      this.mCardService.updateVote(uid, 1, 0);
+      this.mUserDataService.likePost(uid, false);
     }
-    console.log(this.mDoesUserLikePost, this.mDoesUserDislikePost);
   }
 
   onDislike(): void
@@ -164,22 +166,22 @@ export class ViewCardComponent implements OnInit, OnDestroy
     {
       this.mDoesUserLikePost = false;
       this.mDoesUserDislikePost = false;
-      this.mCardService.updateVote(this.mCard, 0, -1);
-      this.mUserDataService.cancel(this.mCard.mPostUID, false);
+      this.mCardService.updateVote(this.mCard.mPostUID, 0, -1);
+      this.mUserDataService.cancelPost(this.mCard.mPostUID, false);
     }
     else if (this.mDoesUserLikePost)
     {
       this.mDoesUserLikePost = false;
       this.mDoesUserDislikePost = true;
-      this.mCardService.updateVote(this.mCard, -1, 1);
-      this.mUserDataService.dislike(this.mCard.mPostUID, true);
+      this.mCardService.updateVote(this.mCard.mPostUID, -1, 1);
+      this.mUserDataService.dislikePost(this.mCard.mPostUID, true);
     }
     else
     {
       this.mDoesUserLikePost = false;
       this.mDoesUserDislikePost = true;
-      this.mCardService.updateVote(this.mCard, 0, 1);
-      this.mUserDataService.dislike(this.mCard.mPostUID, false);
+      this.mCardService.updateVote(this.mCard.mPostUID, 0, 1);
+      this.mUserDataService.dislikePost(this.mCard.mPostUID, false);
     }
   }
 

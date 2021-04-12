@@ -6,8 +6,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 // modules for the toasts + animations
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastrModule} from 'ngx-toastr';
 
 import {AppComponent} from './app.component';
 import {AuthService} from './services/auth.service';
@@ -32,9 +32,14 @@ const appRoutes: Routes = [
   {path: 'posts', component: CardListComponent},
   {path: 'sign-in', component: SignInComponent},
   {path: 'sign-up', component: SignUpComponent},
-  {path: 'new-post', component: NewCardComponent},
   {
-    path: 'user-profile', component: UserProfileComponent
+    path: 'new-post',
+    component: NewCardComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'user-profile', component: UserProfileComponent,
+    canActivate: [AuthGuardService]
   },
   {path: 'not-found', component: NotFoundComponent},
   {path: '', redirectTo: 'posts', pathMatch: 'full'},

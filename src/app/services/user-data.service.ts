@@ -155,54 +155,64 @@ export class UserDataService
     }
   }
 
-  cancel(postUID: number, wasLiked: boolean): void
+  cancelPost(postUID: number, wasLiked: boolean): void
   {
     if (wasLiked)
     {
-      const idx = this.mUserData.mLikedPosts.indexOf(postUID);
-      if (idx > -1)
-      {
-        this.mUserData.mLikedPosts.splice(idx, 1);
-      }
+      this.removeFromArray(this.mUserData.mLikedPosts, postUID);
     }
     else
     {
-      const idx = this.mUserData.mDislikedPosts.indexOf(postUID);
-      if (idx > -1)
-      {
-        this.mUserData.mDislikedPosts.splice(idx, 1);
-      }
+      this.removeFromArray(this.mUserData.mDislikedPosts, postUID);
     }
+    this.saveUserDataToServer()
+      .then(
+        () =>
+        {
+          this.emitUserData();
+        },
+        (error) =>
+        {
+          this.mToast.error(error.message, error.code);
+        });
   }
 
-  like(postUID: number, wasDisliked: boolean): void
+  likePost(postUID: number, wasDisliked: boolean): void
   {
     this.mUserData.mLikedPosts.push(postUID);
     if (wasDisliked)
     {
-      const idx = this.mUserData.mDislikedPosts.indexOf(postUID);
-      if (idx > -1)
-      {
-        this.mUserData.mDislikedPosts.splice(idx, 1);
-      }
+      this.removeFromArray(this.mUserData.mDislikedPosts, postUID);
     }
-    this.emitUserData();
-    this.saveUserDataToServer();
+    this.saveUserDataToServer()
+      .then(
+        () =>
+        {
+          this.emitUserData();
+        },
+        (error) =>
+        {
+          this.mToast.error(error.message, error.code);
+        });
   }
 
-  dislike(postUID: number, wasLiked: boolean): void
+  dislikePost(postUID: number, wasLiked: boolean): void
   {
     this.mUserData.mDislikedPosts.push(postUID);
     if (wasLiked)
     {
-      const idx = this.mUserData.mLikedPosts.indexOf(postUID);
-      if (idx > -1)
-      {
-        this.mUserData.mLikedPosts.splice(idx, 1);
-      }
+      this.removeFromArray(this.mUserData.mLikedPosts, postUID);
     }
-    this.emitUserData();
-    this.saveUserDataToServer();
+    this.saveUserDataToServer()
+      .then(
+        () =>
+        {
+          this.emitUserData();
+        },
+        (error) =>
+        {
+          this.mToast.error(error.message, error.code);
+        });
   }
 
   removeFromArray(arr: Array<number>, target: number): void
@@ -261,21 +271,22 @@ export class UserDataService
     }
   }
 
-  saveUserDataToServer(): void
+  saveUserDataToServer(): Promise<any>
   {
     const url = this.getUrlForUserData();
     if (url)
     {
-      firebase.database().ref(url).set(this.mUserData)
-        .then(
-          () =>
-          {
-            console.log('saveUserDataToServer worked !', this.mUserData);
-          },
-          () =>
-          {
-            console.log('pb in saveUserDataToServer !');
-          });
+      return firebase.database().ref(url).set(this.mUserData);
+    }
+    else
+    {
+      return new Promise<any>((resolve, reject) =>
+      {
+        reject({
+          message: 'User is not authenticated.',
+          code: 'user-data-fail'
+        });
+      });
     }
   }
 
@@ -310,7 +321,10 @@ export class UserDataService
   createNewUserData(data: UserData): void
   {
     this.mUserData = data;
-    this.emitUserData();
-    this.saveUserDataToServer();
+    this.saveUserDataToServer().then(
+      () =>
+      {
+        this.emitUserData();
+      });
   }
 }

@@ -12,8 +12,11 @@ import {Card} from '../models/Card.model';
 import {Subject} from 'rxjs';
 import DataSnapshot = firebase.database.DataSnapshot;
 import UploadTask = firebase.storage.UploadTask;
+import {ToastrService} from 'ngx-toastr';
+import {Injectable} from '@angular/core';
 
 
+@Injectable()
 export class CardService
 {
   // list of posts
@@ -54,7 +57,7 @@ export class CardService
     this.emitSelectedCard();
   }
 
-  constructor()
+  constructor(private mToast: ToastrService)
   {
     this.getCardsFromServer();
   }
@@ -78,7 +81,7 @@ export class CardService
   private saveCardsToServer(): Promise<any>
   {
     const url: string = this.getUrlForPosts();
-    console.log('saveCardsToServer', this.mCards);
+    // console.log('saveCardsToServer', this.mCards);
     return firebase.database().ref(url).set(this.mCards);
   }
 
@@ -123,19 +126,19 @@ export class CardService
   }
 
 
-  // // Returns the card with a specific uid. When no card with that uid is
-  // // found, this method returns a blank card.
-  // getCardByUID(uid: number): Card
-  // {
-  //   for (const card of this.mCards)
-  //   {
-  //     if (card.mPostUID === uid)
-  //     {
-  //       return card;
-  //     }
-  //   }
-  //   return Card.makeEmpty();
-  // }
+  // Returns the card with a specific uid. When no card with that uid is
+  // found, this method returns a blank card.
+  getCardByUID(uid: number): Card
+  {
+    for (const card of this.mCards)
+    {
+      if (card.mPostUID === uid)
+      {
+        return card;
+      }
+    }
+    return Card.makeEmpty();
+  }
 
   // updateVote(uid: number, addLike: number, addDislike): void
   // {
@@ -145,13 +148,39 @@ export class CardService
   //   this.emitCards();
   //   this.saveCardsToServer();
   // }
-  updateVote(card: Card, addLike: number, addDislike): void
+  updateVote(uid: number, addLike: number, addDislike): void
   {
-    card.mNbLikes += addLike;
-    card.mNbDislikes += addDislike;
-    this.emitCards();
-    this.saveCardsToServer();
+    const target: Card = this.getCardByUID(uid);
+    target.mNbLikes += addLike;
+    target.mNbDislikes += addDislike;
+    this.saveCardsToServer().then(
+      () =>
+      {
+        this.emitCards();
+      },
+      (error) =>
+      {
+        this.mToast.error(error.message, error.code);
+      });
   }
+
+  // updateVote(card: Card, addLike: number, addDislike): void
+  // {
+  //   console.log('#nblikes=', this.mCards[0].mNbLikes);
+  //   card.mNbLikes += addLike;
+  //   card.mNbDislikes += addDislike;
+  //   console.log('  #nblikes=', this.mCards[0].mNbLikes);
+  //   this.saveCardsToServer().then(
+  //     () =>
+  //     {
+  //       console.log('cards saved');
+  //       this.emitCards();
+  //     },
+  //     (error) =>
+  //     {
+  //       console.error('cards not saved', error);
+  //     });
+  // }
 
   // sort all cards, by decreasing date (even though it's not really clean,
   // we can use postUID to achieve that easily.
